@@ -30,22 +30,18 @@ router.get("/list", redirectLogin, function(req, res, next) {
 });
 
 
-router.post('/registered',
-    [check('email').isEmail(), check('username').isLength({min: 1, max: 20})],  
+router.post('/registered', [check('email').isEmail(),
+    check('username').isLength({ min: 5, max: 20})],
     function (req, res, next) {
+    const saltRounds = 10
+    const plainPassword = req.body.password
     const errors = validationResult(req);
+    
     if (!errors.isEmpty()) {
-        return res.render('register.ejs')
+        res.render('./register')
     }
-    else {
-        const plainPassword = req.body.password;
-        const username = req.body.username;
-        const first = req.sanitize(req.body.first);
-        const last = req.sanitize(req.body.last);
-        const email = req.sanitize(req.body.email);
-        }
 
-    bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
+    else{ bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
         // Store hashed password in your database.
         let sqlquery = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?,?,?,?,?)"
         
@@ -61,6 +57,8 @@ router.post('/registered',
             }
         });
     });
+
+    };
 
 });
 
