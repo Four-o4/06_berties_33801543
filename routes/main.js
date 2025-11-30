@@ -2,6 +2,15 @@
 const express = require("express")
 const router = express.Router()
 
+// redirects to log in page
+const redirectLogin = (req, res, next) => {
+    if(!req.session.userId) {
+        res.redirect('/users/login') 
+    } else {
+        next ();
+    }
+}
+
 // Handle our routes
 router.get('/',function(req, res, next){
     res.render('index.ejs')
@@ -15,9 +24,17 @@ router.get('/list',function(req, res, next){
     res.render('list.ejs')
 });
 
-router.get('/books/addbook',function(req, res, next){
+router.get('/books/addbook', redirectLogin, function(req, res, next){
     res.render('addbook.ejs')
 });
 
+router.get('/logout', redirectLogin, (req,res) => {
+        req.session.destroy(err => {
+        if (err) {
+          return res.redirect('./')
+        }
+        res.send('you are now logged out.' + ' <a href="./">Go to Home Page</a>')
+        })
+    })
 // Export the router object so index.js can access it
 module.exports = router

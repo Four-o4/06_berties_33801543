@@ -2,13 +2,22 @@
 const express = require("express")
 const router = express.Router()
 const bcrypt = require('bcrypt')
+const saltRounds = 10
+const { check, validationResult } = require('express-validator');
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId ) {
+      res.redirect('./login') // redirect to the login page
+    } else { 
+        next (); // move to the next middleware function
+    } 
+}
 
 router.get('/register', function (req, res, next) {
     res.render('register.ejs')
 });
 
-router.get("/list", function(req, res, next) {
+router.get("/list", redirectLogin, function(req, res, next) {
     let sqlquery = "SELECT * FROM users"; // query database to get all the users
 
     //execute sqlquery
@@ -21,16 +30,27 @@ router.get("/list", function(req, res, next) {
 });
 
 
-router.post('/registered', function (req, res, next) {
-    const saltRounds = 10
-    const plainPassword = req.body.password
+router.post('/registered',
+    [check('email').isEmail(), check('username').isLength({min: 1, max: 20})],  
+    function (req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.render('register.ejs')
+    }
+    else {
+        const plainPassword = req.body.password;
+        const username = req.body.username;
+        const first = req.sanitize(req.body.first);
+        const last = req.sanitize(req.body.last);
+        const email = req.sanitize(req.body.email);
+        }
 
     bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
         // Store hashed password in your database.
         let sqlquery = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?,?,?,?,?)"
         
         // execute sql query
-        let newrecord = [req.body.first, req.body.last, req.body.email, req.body.username, req.body.password]
+        let newrecord = [req.body.first, req.body.last, req.body.email, req.body.username, hashedPassword]
         db.query(sqlquery, newrecord, (err, result) => {
             if (err) {
                 next(err)
@@ -44,11 +64,11 @@ router.post('/registered', function (req, res, next) {
 
 });
 
-router.get('/signin', function (req, res, next) {
+router.get('/login', function (req, res, next) {
     res.render('signin.ejs')
 });
 
-router.post('/signedin', function (req, res, next) {
+router.post('/loggedin', function (req, res, next) {
     const username = req.body.username
     const plainPassword = req.body.password
 
@@ -70,7 +90,8 @@ router.post('/signedin', function (req, res, next) {
               next(err)
             }
             else if (result == true) {
-              res.send('Welcome ' + req.body.username + '!' + 'You are now signed in!')
+              req.session.userId = req.body.username;
+              res.send('Welcome ' + req.body.username + '!' + 'You are now signed in!' + ' <a href="../">Go to Home Page</a>')           
             }
             else {
               res.send('Incorrect Password')

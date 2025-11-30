@@ -9,6 +9,9 @@ To install and run:
 npm install
 node index.js
 
+access control added to registered users, add book, search books and book list
+sanitization added in the first name, last name and username of register page
+
 STRUCTURE:
 
 # Berties bookshop
@@ -29,6 +32,8 @@ We sell all sorts of books and nothing else!
 FIRST NAME:
 LAST NAME:
 EMAIL:
+USERNAME:
+PASSWORD:
 -------------------------------------------------------------------------
 # Sign in
 Username:
@@ -42,8 +47,4 @@ TITLE:
 PRICE:
 -------------------------------------------------------------------------
 # See out book list
-Brighton Rock £20.25
-Brave New World £25.00
-Animal Farm £12.99
-The Hunger Games £12.99
-Divergent £13.99
+List of all registered books within the database will show up
