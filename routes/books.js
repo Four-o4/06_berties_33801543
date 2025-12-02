@@ -29,7 +29,11 @@ router.get('/list', redirectLogin, function(req, res, next) {
             }
             res.render("list.ejs", {availableBooks:result})
          });
-    });
+});
+
+router.get('/addbook', redirectLogin, function(req, res, next){
+res.render('addbook.ejs')
+});
 
 router.post('/bookadded', function (req, res, next) {
     // saving data in database

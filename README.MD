@@ -46,5 +46,5 @@ A list of all users registered will show up
 TITLE:
 PRICE:
 -------------------------------------------------------------------------
-# See out book list
+# See our book list
 List of all registered books within the database will show up

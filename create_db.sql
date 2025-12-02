@@ -23,5 +23,6 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY(id));
 
 # Create the application user
-CREATE USER IF NOT EXISTS 'berties_books_app'@'localhost' IDENTIFIED BY 'qwertyuiop'; 
+CREATE USER IF NOT EXISTS 'gold'@'localhost' IDENTIFIED BY 'smiths';
 GRANT ALL PRIVILEGES ON berties_books.* TO ' berties_books_app'@'localhost';
+FLUSH PRIVILEGES;

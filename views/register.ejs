@@ -5,14 +5,70 @@
     <link rel="stylesheet"  type="text/css" href="/main.css" />
   </head>
   <body>
+    <!-- <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+      <ul style="color: red;">
+        <% errors.forEach(function(error) { %>
+          <li><%= error.msg %></li>
+        <% }) %>
+
+          <% errors.forEach(function(first_name) { %>
+          <li><%= first_name.msg %></li>
+        <% }) %>
+
+          <% errors.forEach(function(last_name) { %>
+          <li><%= last_name.msg %></li>
+        <% }) %>
+
+          <% errors.forEach(function(username) { %>
+          <li><%= username.msg %></li>
+        <% }) %>
+
+        <% errors.forEach(function(password) { %>
+          <li><%= password.msg %></li>
+        <% }) %>
+      </ul>
+    <% }; %>
+   -->
+
     <h1>Register Here:</h1>
     <form method="POST" action="registered">
-        <p>First name: <input id="first" type="text" name="first" /></p>
-        <p>Last name: <input id="last" type="text" name="last" /></p>
-        <p>Username: <input id="username" type="username" name="username" /></p>
-        <p>Password: <input id="password" type="password" name="password" /></p>
-        <p>Email: <input id="email" type="email" name="email" /></p>
-        <input type="submit" value="Register" />
-      </form>
+
+  <p>First name:
+    <input id="first" type="text" name="first" value="<%= oldInput?.first || '' %>"/>
+    <% if (errors?.first) { %>
+      <span style="color:red;"><%= errors.first.msg %></span>
+    <% } %>
+  </p>
+
+  <p>Last name:
+    <input id="last" type="text" name="last" value="<%= oldInput?.last || '' %>">
+    <% if (errors?.last) { %>
+      <span style="color:red;"><%= errors.last.msg %></span>
+    <% } %>
+  </p>
+
+  <p>Username:
+    <input id="username" type="text" name="username" value="<%= oldInput?.username || '' %>">
+    <% if (errors?.username) { %>
+      <span style="color:red;"><%= errors.username.msg %></span>
+    <% } %>
+  </p>
+
+  <p>Password:
+    <input id="password" type="password" name="password">
+    <% if (errors?.password) { %>
+      <span style="color:red;"><%= errors.password.msg %></span>
+    <% } %>
+  </p>
+
+  <p>Email:
+    <input id="email" type="email" name="email" value="<%= oldInput?.email || '' %>">
+    <% if (errors?.email) { %>
+      <span style="color:red;"><%= errors.email.msg %></span>
+    <% } %>
+  </p>
+
+  <input type="submit" value="Register">
+</form>
   </body>
 </html>

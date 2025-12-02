@@ -14,7 +14,7 @@ const redirectLogin = (req, res, next) => {
 }
 
 router.get('/register', function (req, res, next) {
-    res.render('register.ejs')
+    res.render('register.ejs', {errors: [], oldInput: {}})
 });
 
 router.get("/list", redirectLogin, function(req, res, next) {
@@ -31,14 +31,20 @@ router.get("/list", redirectLogin, function(req, res, next) {
 
 
 router.post('/registered', [check('email').isEmail(),
-    check('username').isLength({ min: 5, max: 20})],
+    check('username').isLength({ min: 5, max: 20}).withMessage('Username must be between 5 and 20 characters long'),
+    check('password').isLength({ min: 8}).withMessage('Password must be at least 8 characters long'),
+    check('first').not().isEmpty().withMessage('First name is required'),
+    check('last').not().isEmpty().withMessage('Last name is required')],
     function (req, res, next) {
     const saltRounds = 10
     const plainPassword = req.body.password
-    const errors = validationResult(req);
-    
+    const errors = validationResult(req)
+    const first = req.sanitize(req.body.first)
+    const last = req.sanitize(req.body.last)
+    const email = req.sanitize(req.body.email)
     if (!errors.isEmpty()) {
-        res.render('./register')
+        // console.log("hello");
+        res.render('./register.ejs', { errors: errors.mapped(), oldInput: req.body });
     }
 
     else{ bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
@@ -46,7 +52,7 @@ router.post('/registered', [check('email').isEmail(),
         let sqlquery = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?,?,?,?,?)"
         
         // execute sql query
-        let newrecord = [req.body.first, req.body.last, req.body.email, req.body.username, hashedPassword]
+        let newrecord = [first, last, email, req.body.username, hashedPassword]
         db.query(sqlquery, newrecord, (err, result) => {
             if (err) {
                 next(err)
