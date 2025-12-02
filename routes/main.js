@@ -24,6 +24,8 @@ router.get('/list',function(req, res, next){
     res.render('list.ejs')
 });
 
+
+
 router.get('/logout', redirectLogin, (req,res) => {
         req.session.destroy(err => {
         if (err) {

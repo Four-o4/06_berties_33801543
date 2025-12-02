@@ -22,7 +22,4 @@ CREATE TABLE IF NOT EXISTS users (
     password     VARCHAR(60),
     PRIMARY KEY(id));
 
-# Create the application user
-CREATE USER IF NOT EXISTS 'gold'@'localhost' IDENTIFIED BY 'smiths';
-GRANT ALL PRIVILEGES ON berties_books.* TO ' berties_books_app'@'localhost';
-FLUSH PRIVILEGES;
+
