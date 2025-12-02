@@ -18,11 +18,11 @@ router.get('/', function (req, res, next) {
                 ' degrees in ' + weather.name +
                 '! <br> The humidity now is: ' +
                 weather.main.humidity;
-            // res.send(wmsg);
+            res.send(wmsg);
 
             // res.send(body)
         }
-        res.render('weather.ejs');
+        // res.render('weather.ejs');
     });
 });
 
