@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const saltRounds = 10
 const { check, validationResult } = require('express-validator');
 
+// redirects to log in page
 const redirectLogin = (req, res, next) => {
     if (!req.session.userId ) {
       res.redirect('./login') // redirect to the login page
@@ -13,10 +14,13 @@ const redirectLogin = (req, res, next) => {
     } 
 }
 
+// Render the registration page
 router.get('/register', function (req, res, next) {
     res.render('register.ejs', {errors: [], oldInput: {}})
 });
 
+
+// List users route
 router.get("/list", redirectLogin, function(req, res, next) {
     let sqlquery = "SELECT * FROM users"; // query database to get all the users
 
@@ -29,7 +33,7 @@ router.get("/list", redirectLogin, function(req, res, next) {
     });
 });
 
-
+// Handle the registration form submission
 router.post('/registered', [check('email').isEmail(),
     check('username').isLength({ min: 5, max: 20}).withMessage('Username must be between 5 and 20 characters long'),
     check('password').isLength({ min: 8}).withMessage('Password must be at least 8 characters long'),
@@ -58,7 +62,7 @@ router.post('/registered', [check('email').isEmail(),
                 next(err)
             }
             else {
-                result ='Hello '+ req.body.first + ' ' + req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email + 'Your password is: '+ req.body.password +' and your hashed password is: '+ hashedPassword
+                result ='Hello '+ req.body.first + ' ' + req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email + 'Your password is: '+ req.body.password + ' <a href="./login">Go to Login Page</a>',
                 res.send(result)
             }
         });
@@ -68,10 +72,12 @@ router.post('/registered', [check('email').isEmail(),
 
 });
 
+// Render the login page
 router.get('/login', function (req, res, next) {
     res.render('signin.ejs')
 });
 
+// Handle the login form submission
 router.post('/loggedin', function (req, res, next) {
     const username = req.body.username
     const plainPassword = req.body.password

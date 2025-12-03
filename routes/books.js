@@ -2,6 +2,7 @@
 const express = require("express")
 const router = express.Router()
 
+// redirects to log in page
 const redirectLogin = (req, res, next) => {
     if (!req.session.userId ) {
       res.redirect('/users/login') // redirect to the login page
@@ -10,15 +11,19 @@ const redirectLogin = (req, res, next) => {
     } 
 }
 
+// Search books route
 router.get('/search',redirectLogin,function(req, res, next){
     res.render("search.ejs")
 });
 
+
+// Handle the search form submission
 router.get('/search-result', function (req, res, next) {
     //searching in the database
     res.send("You searched for: " + req.query.keyword)
 });
 
+// List books route
 router.get('/list', redirectLogin, function(req, res, next) {
         let sqlquery = "SELECT * FROM books"; // query database to get all the books
         
@@ -31,10 +36,12 @@ router.get('/list', redirectLogin, function(req, res, next) {
          });
 });
 
+// Add book route
 router.get('/addbook', redirectLogin, function(req, res, next){
 res.render('addbook.ejs')
 });
 
+// Handle the add book form submission
 router.post('/bookadded', function (req, res, next) {
     // saving data in database
     let sqlquery = "INSERT INTO books (name, price) VALUES (?,?)"
