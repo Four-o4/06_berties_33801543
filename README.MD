@@ -7,7 +7,7 @@ To install and run:
 npm install
 node index.js
 
-- Access control added to registered users, add book, search books and book list
+Access control added to registered users, add book, search books and book list
 
 Sanitization added in the first name, last name, username and password:
 - first and last name is REQUIRED
