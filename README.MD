@@ -8,7 +8,8 @@ npm install
 node index.js
 
 - Access control added to registered users, add book, search books and book list
-* Sanitization added in the first name, last name, username and password:
+
+Sanitization added in the first name, last name, username and password:
 - first and last name is REQUIRED
 - Username must be between 5 - 20 characters long
 - password must have a minimum of 8 characters
@@ -64,12 +65,13 @@ node index.js
 -------------------------------------------------------------------------
 
 # Check weacher
-- Users are able to search the current weather in any valid location 
+- Users are able to search the current weather in any valid location
+
 *given wrong location will result in an error message*
 -------------------------------------------------------------------------
 
 # Logout
-- user will be logged out of their account
+- User will be logged out of their account
 --
 -------------------------------------------------------------------------
 
